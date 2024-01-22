@@ -52,6 +52,7 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    void clearUnusedOutputChannels(juce::AudioBuffer<float>& buffer);
     
     /** Value Trees  ===========================================================*/
     juce::AudioProcessorValueTreeState treeState;
@@ -60,14 +61,27 @@ private:
     /** Parameters  ===========================================================*/
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
-    //Module for changing the gain
-    juce::dsp::Gain<float> gainModule;
+    //Module for changing the input volujme
+    juce::dsp::Gain<float> inputVolumeModule;
+    
+    //Module for changing the output volume
+    juce::dsp::Gain<float> outputVolumeModule;
     
     //Module for changing the dry-wet amount
     juce::dsp::DryWetMixer<float> dryWetMixerModule;
     
     //Module for changing the processing filter
     juce::dsp::LinkwitzRileyFilter<float> filterModule;
+    
+    //Module for tone filter
+    juce::dsp::ProcessorDuplicator <juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Coefficients <float>> toneFilter;
+    
+    //User sample rate
+    float lastSampleRate;
+    
+    //Smoothed values for parameters
+    juce::SmoothedValue<float> drive;
+    juce::SmoothedValue<float> ceiling;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeepFryerAudioProcessor)

@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "AudioHelpers.h"
 
 //==============================================================================
 DeepFryerAudioProcessor::DeepFryerAudioProcessor()
@@ -42,7 +43,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout DeepFryerAudioProcessor::cre
     createParameter("outputVolume", "Output Volume", -24.0, 24.0, 0.0);
     createParameter("mix", "Mix", 0.0, 100.0, 100.0);
     createParameter("drive", "Drive", 0.0, 100.0, 0.0);
-    createParameter("tone", "Tone", 0.0, 100.0, 0.0);
+    createParameter("tone", "Tone", -100.0, 100.0, 0.0);
     createParameter("clarity", "Clarity", 0.0, 100.0, 0.0);
     
     //Return initialized parameters
@@ -114,25 +115,33 @@ void DeepFryerAudioProcessor::changeProgramName (int index, const juce::String& 
 //==============================================================================
 void DeepFryerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    // Store the sample rate for later use
+    lastSampleRate = sampleRate;
+    
+    // Setup audio processing specifications
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = getTotalNumInputChannels();
     
     // Setting the smoothing parameter for ramping value transitions in audio processing
-    double smoothingParameter = 0.1;
+    double smoothingParameter = 0.01;
     
     //Prepare the audio processing blocks
-    gainModule.prepare(spec);
+    inputVolumeModule.prepare(spec);
+    outputVolumeModule.prepare(spec);
     dryWetMixerModule.prepare(spec);
     filterModule.prepare(spec);
     
-    // Set the ramp duration for transitioning audio processing parameters
-    gainModule.setRampDurationSeconds(smoothingParameter);
+    // Prepare and reset the tone filter
+    toneFilter.prepare(spec);
+    toneFilter.reset();
     
-    
+    // Reset and set the ramp duration for transitioning audio processing parameters
+    inputVolumeModule.setRampDurationSeconds(smoothingParameter);
+    outputVolumeModule.setRampDurationSeconds(smoothingParameter);
+    drive.reset(lastSampleRate, smoothingParameter);
+    ceiling.reset(lastSampleRate, smoothingParameter);
 }
 
 void DeepFryerAudioProcessor::releaseResources()
@@ -170,40 +179,80 @@ bool DeepFryerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
 void DeepFryerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
     
     // Clear any output channels that didn't contain input data
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+    clearUnusedOutputChannels(buffer);
     
-    // Initialize parameter pointers
-    // Input and Output gain -24db to 24db
-    float inputVolumeValue   = *treeState.getRawParameterValue("inputVolume");
-    float outputVolumeValue  = *treeState.getRawParameterValue("outputVolume");
+    // Initialize parameter values
+    // Input and Output gain from -24db to 24db
+    float inputVolumeValue = *treeState.getRawParameterValue("inputVolume");
+    float outputVolumeValue = *treeState.getRawParameterValue("outputVolume");
     
-    // Dry-Wet value from 0 to 100%
-    float mixValue       = *treeState.getRawParameterValue("mix");
+    // Dry-Wet value from 0 to 1
+    float mixValue = *treeState.getRawParameterValue("mix") / 100;
     
-    // Amount of drive 0 to 100
-    float driveValue     = *treeState.getRawParameterValue("drive");
+    // Amount of drive from 0 to 1
+    float driveValue = *treeState.getRawParameterValue("drive") / 100;
     
-    // Amount of filter 0 to 100
-    float filterValue    = *treeState.getRawParameterValue("clarity");
+    // Set 0 to 24db target value to drive smoothing
+    drive.setTargetValue(juce::Decibels::decibelsToGain(driveValue * 24));
     
-    // Amount of tone 0 to 100
-    float toneValue      = *treeState.getRawParameterValue("tone");
+    // Set 0.5 to 1 target value to ceiling smoothing
+    ceiling.setTargetValue(1 - driveValue / 2);
     
-    //Initialize an AudioBlock using the audio buffer
+    // Amount of filter from 0 to 100
+    float filterValue = *treeState.getRawParameterValue("clarity");
+    
+    // Amount of tone from -25db to 25db
+    float toneValue = juce::Decibels::decibelsToGain(*treeState.getRawParameterValue("tone")/ 5);
+    
+    // Frequency and Q for tone filter
+    const float toneFrequency = 10000.0f;
+    const float toneQ = 0.3f;
+    
+    // Initialize an AudioBlock using the audio buffer
     juce::dsp::AudioBlock<float> block {buffer};
     
-    //Set the gain in decibels based on the inputVolumeValue
-    gainModule.setGainDecibels(inputVolumeValue);
-    gainModule.process(juce::dsp::ProcessContextReplacing<float>(block));
+    // Add dry block to dry-wet mixer
+    dryWetMixerModule.pushDrySamples(block);
     
-    //Set the gain in decibels based on the outputVolumeValue
-    gainModule.setGainDecibels(outputVolumeValue);
-    gainModule.process(juce::dsp::ProcessContextReplacing<float>(block));
+    // Set the input gain in decibels based on the inputVolumeValue
+    inputVolumeModule.setGainDecibels(inputVolumeValue);
+    inputVolumeModule.process(juce::dsp::ProcessContextReplacing<float>(block));
+    
+    // Distortion processing loop
+    for (int channel = 0; channel < block.getNumChannels(); ++channel)
+    {
+        auto* channelData = block.getChannelPointer(channel);
+        
+        for (int sample = 0; sample < block.getNumSamples(); ++sample)
+        {
+            float bufferSample = channelData[sample];
+            float saturatedSample = saturateSample(bufferSample, drive.getNextValue(), ceiling.getNextValue());
+            channelData[sample] = saturatedSample;
+        }
+    }
+    
+    // Apply tone filter
+    *toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeHighShelf(lastSampleRate, toneFrequency, toneQ, toneValue);
+    toneFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+    
+    // Set the output gain in decibels based on the outputVolumeValue
+    outputVolumeModule.setGainDecibels(outputVolumeValue);
+    outputVolumeModule.process(juce::dsp::ProcessContextReplacing<float>(block));
+    
+    // Set the balance between dry-wet mix
+    dryWetMixerModule.setWetMixProportion(mixValue);
+    dryWetMixerModule.mixWetSamples(block);
+}
+
+void DeepFryerAudioProcessor::clearUnusedOutputChannels(juce::AudioBuffer<float>& buffer)
+{
+    auto totalNumInputChannels = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();
+
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear(i, 0, buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -215,6 +264,7 @@ bool DeepFryerAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor* DeepFryerAudioProcessor::createEditor()
 {
     //return new DeepFryerAudioProcessorEditor (*this);
+    //Generic UI for debugging
     return new juce::GenericAudioProcessorEditor(*this);
 }
 
