@@ -8,22 +8,13 @@
 
 #include "AudioHelpers.h"
 
-float clampValue(float value, float minValue, float maxValue)
+const float clamp(const float value, const float minValue, const float maxValue)
 {
     // JUCE doesn't support std::clamp, hence this monstrosity
-    if (value < minValue)
-    {
-        return minValue;
-    }
-    else if (value > maxValue)
-    {
-        return maxValue;
-    }
-    return value;
+    return (value < minValue) ? minValue : ((value > maxValue) ? maxValue : value);
 }
 
-float saturateSample(float sample, float driveValue, float ceilingValue)
+const float max(const float a, const float b)
 {
-    float saturatedSample = sample * driveValue;
-    return clampValue(saturatedSample, -ceilingValue, ceilingValue);
+    return (a < b) ? b : a;
 }

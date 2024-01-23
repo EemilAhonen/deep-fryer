@@ -43,7 +43,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout DeepFryerAudioProcessor::cre
     createParameter("outputVolume", "Output Volume", -24.0, 24.0, 0.0);
     createParameter("drive", "Drive", 0.0, 100.0, 0.0);
     createParameter("tone", "Tone", -100.0, 100.0, 0.0);
-    createParameter("clarity", "Clarity", 0.0, 100.0, 0.0);
+    createParameter("clarity", "Clarity", 0, 100.0, 0);
     createParameter("mix", "Mix", 0.0, 100.0, 100.0);
     
     //Return initialized parameters
@@ -124,22 +124,21 @@ void DeepFryerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBl
     spec.maximumBlockSize = samplesPerBlock;
     spec.numChannels = getTotalNumInputChannels();
     
-    // Setting the smoothing parameter for ramping value transitions in audio processing
-    double smoothingParameter = 0.001;
-    
     //Prepare the audio processing blocks
     inputVolumeModule.prepare(spec);
     outputVolumeModule.prepare(spec);
-    clarityModule.prepare(spec);
     toneFilter.prepare(spec);
     dryWetMixerModule.prepare(spec);
+    clarityModule.prepare(spec);
     
     // Reset and set the ramp duration for transitioning audio processing parameters
     inputVolumeValue.reset(lastSampleRate, smoothingParameter);
     outputVolumeValue.reset(lastSampleRate, smoothingParameter);
-    driveValue.reset(lastSampleRate, smoothingParameter * 10);
+    driveValue.reset(lastSampleRate, smoothingParameter * 40);
+    clarityValue.reset(lastSampleRate, smoothingParameter * 100);
     toneFilter.reset();
 }
+
 
 void DeepFryerAudioProcessor::releaseResources()
 {
@@ -176,9 +175,11 @@ bool DeepFryerAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
 
 void DeepFryerAudioProcessor::clearUnusedOutputChannels(juce::AudioBuffer<float>& buffer)
 {
+    // Get the total number of input and output channels
     auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+    // Clear any unused output channels
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 }
@@ -186,21 +187,62 @@ void DeepFryerAudioProcessor::clearUnusedOutputChannels(juce::AudioBuffer<float>
 void DeepFryerAudioProcessor::updateParameters()
 {
     // Update parameter values
-    // Input and Output gain from -24db to 24db
     inputVolumeValue.setTargetValue(*treeState.getRawParameterValue("inputVolume"));
     outputVolumeValue.setTargetValue(*treeState.getRawParameterValue("outputVolume"));
     
-    // Amount of drive from 0-100 to 0-1
+    // Scale the drive parameter from 0-100 to 0-1
     driveValue.setTargetValue(*treeState.getRawParameterValue("drive") / 100);
     
-    // Amount of tone from -20db to 20db
-    toneValue = juce::Decibels::decibelsToGain(*treeState.getRawParameterValue("tone") / 5);
+    // Amount of tone from -maximumTone to maximumTone
+    toneValue = juce::Decibels::decibelsToGain(*treeState.getRawParameterValue("tone") / 100 * maximumTone);
     
-    // Amount of filter from 0 to 100
-    clarityValue = *treeState.getRawParameterValue("clarity");
+    // Scale the clarity parameter from 0 to 100 to a cutoff frequency from 20 to maximumClarity
+    clarityValue.setTargetValue(max(*treeState.getRawParameterValue("clarity"), 20.f));
+    clarityModule.setCutoffFrequency(clarityValue.getNextValue() * maximumClarity / 10);
     
-    // Dry-Wet value from 0-100 to 0-1
+    // Scale the mix parameter from 0-100 to 0-1
     mixValue = *treeState.getRawParameterValue("mix") / 100;
+}
+
+void DeepFryerAudioProcessor::processDistortion(juce::dsp::AudioBlock<float>& block)
+{
+    for (int channel = 0; channel < block.getNumChannels(); ++channel)
+    {
+        auto* channelData = block.getChannelPointer(channel);
+
+        for (int sample = 0; sample < block.getNumSamples(); ++sample)
+        {
+            float drive = driveValue.getNextValue();
+            
+            // How much clarity effects ceiling. 0.3 - 1 with / 500
+            float clarityFactor = clarityValue.getNextValue() / 500;
+            
+            // Calculate ceiling and compensation value for clipping
+            float ceiling = 1 - drive * 0.5f - clarityFactor;
+            float gainCompensation = 1 + drive;
+            
+            // Apply distortion
+            float saturatedSample = channelData[sample] * juce::Decibels::decibelsToGain(drive * maximumDrive);
+            float outputLow, outputHigh;
+            
+            // Split signal into 2 bands
+            clarityModule.processSample(channel, saturatedSample, outputLow, outputHigh);
+            
+            // Clamp values
+            float saturatedHigh = clamp(outputHigh, -ceiling, ceiling);
+            float saturatedLow = clamp(outputLow, -1.f, 1.f);
+            
+            // Update channel data
+            channelData[sample] = saturatedHigh + (saturatedLow / gainCompensation);
+        }
+    }
+}
+
+void DeepFryerAudioProcessor::processTone(juce::dsp::AudioBlock<float>& block)
+{
+    // Apply tone filter
+    *toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeHighShelf(lastSampleRate, toneFrequency, toneQ, toneValue);
+    toneFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
 }
 
 void DeepFryerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
@@ -221,27 +263,11 @@ void DeepFryerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     inputVolumeModule.setGainDecibels(inputVolumeValue.getNextValue());
     inputVolumeModule.process(juce::dsp::ProcessContextReplacing<float>(block));
     
-    // Distortion processing loop
-    for (int channel = 0; channel < block.getNumChannels(); ++channel)
-    {
-        auto* channelData = block.getChannelPointer(channel);
-        
-        for (int sample = 0; sample < block.getNumSamples(); ++sample)
-        {
-            float drive = driveValue.getNextValue();
-            // Set 0.5 to 1 target value to ceiling smoothing
-            float ceiling = 1 - drive / 2;
-            
-            DBG(ceiling);
-            
-            float saturatedSample = saturateSample(channelData[sample], juce::Decibels::decibelsToGain(drive * 24), ceiling);
-            channelData[sample] = saturatedSample;
-        }
-    }
+    // Process distortion
+    processDistortion(block);
     
-    // Apply tone filter
-    *toneFilter.state = *juce::dsp::IIR::Coefficients<float>::makeHighShelf(lastSampleRate, toneFrequency, toneQ, toneValue);
-    toneFilter.process(juce::dsp::ProcessContextReplacing<float>(block));
+    // Process tone filter
+    processTone(block);
     
     // Set the output gain in decibels based on the outputVolumeValue
     outputVolumeModule.setGainDecibels(outputVolumeValue.getNextValue());

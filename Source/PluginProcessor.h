@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <array>
 
 //==============================================================================
 /**
@@ -55,6 +56,8 @@ public:
     
     //==============================================================================
     void clearUnusedOutputChannels(juce::AudioBuffer<float>& buffer);
+    void processDistortion(juce::dsp::AudioBlock<float>& block);
+    void processTone(juce::dsp::AudioBlock<float>& block);
     void updateParameters();
     
     /** Value Trees  ===========================================================*/
@@ -82,17 +85,25 @@ private:
     // User sample rate
     float lastSampleRate;
     
+    // Setting the smoothing parameter for ramping value transitions in audio processing
+    const double smoothingParameter = 0.001;
+    
     // Values for user modifiable parameters
-    juce::SmoothedValue<float> inputVolumeValue;
-    juce::SmoothedValue<float> outputVolumeValue;
-    juce::SmoothedValue<float> driveValue;
-    float toneValue = 0.f; // in db
-    float clarityValue = 20.0f; // in hz
+    juce::SmoothedValue<float> inputVolumeValue; //-24db to 24db
+    juce::SmoothedValue<float> outputVolumeValue; //-24db to 24db
+    juce::SmoothedValue<float> driveValue; // 0-1
+    float toneValue = 0.f;
+    juce::SmoothedValue<float> clarityValue;
     float mixValue = 1.f; // 0-1
     
     // Frequency and Q for tone filter
-    const float toneFrequency = 10000.0f;
+    const float toneFrequency = 10000.f;
     const float toneQ = 0.3f;
+    
+    // Maximum values for parameters
+    const float maximumDrive = 50.f; //in db
+    const float maximumTone = 24.f; //in db
+    const float maximumClarity = 1000.f; //in hz
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeepFryerAudioProcessor)
