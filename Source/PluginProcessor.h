@@ -9,12 +9,11 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <array>
+#include "Globals.h"
 
 //==============================================================================
-/**
-*/
-class DeepFryerAudioProcessor  : public juce::AudioProcessor
+
+class DeepFryerAudioProcessor  : public juce::AudioProcessor, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -60,12 +59,16 @@ public:
     void processTone(juce::dsp::AudioBlock<float>& block);
     void updateParameters();
     
-    /** Value Trees  ===========================================================*/
+    //== Tree state ================================================================
     juce::AudioProcessorValueTreeState treeState;
-
+    
 private:
-    /** Parameters  ===========================================================*/
+    //== Functions =================================================================
+    
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
+    
+    //== Modules ===================================================================
     
     // Module for changing the input volujme
     juce::dsp::Gain<float> inputVolumeModule;
@@ -81,6 +84,8 @@ private:
     
     // Module for changing the dry-wet amount
     juce::dsp::DryWetMixer<float> dryWetMixerModule;
+    
+    //== Parameters ================================================================
     
     // User sample rate
     float lastSampleRate;

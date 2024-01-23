@@ -1,5 +1,5 @@
 //
-//  AudioHelpers.h
+//  HelperFunctions.h
 //  DeepFryer
 //
 //  Created by Eemil Ahonen on 23.1.2024.
@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <JuceHeader.h>
+//==============================================================================
 
 const float clamp(const float value, const float minValue, const float maxValue);
 
