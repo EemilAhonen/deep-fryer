@@ -303,9 +303,9 @@ bool DeepFryerAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* DeepFryerAudioProcessor::createEditor()
 {
-    //return new DeepFryerAudioProcessorEditor (*this);
+    return new DeepFryerAudioProcessorEditor (*this);
     //Generic UI for debugging
-    return new juce::GenericAudioProcessorEditor(*this);
+    //return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
