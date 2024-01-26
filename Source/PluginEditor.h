@@ -40,14 +40,16 @@ private:
     
     //== Parameters ================================================================
     
-    const int INIT_WIDTH = 1500;
-    const int INIT_HEIGHT = 750;
+    const int INIT_WIDTH = 750;
+    const int INIT_HEIGHT = 375;
     
-    const int MIN_HEIGHT = 250;
     const int MIN_WIDTH = 500;
+    const int MIN_HEIGHT = 250;
     
     const int MAX_HEIGHT = 1500;
     const int MAX_WIDTH = 3000;
+    
+    void savePluginBounds();
     
     //== Widgets ===================================================================
     

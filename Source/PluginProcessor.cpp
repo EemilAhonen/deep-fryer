@@ -314,12 +314,25 @@ void DeepFryerAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
+    treeState.state.appendChild(valueTree, nullptr);
+    juce::MemoryOutputStream stream(destData, false);
+    treeState.state.writeToStream (stream);
 }
 
 void DeepFryerAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+    auto tree = juce::ValueTree::readFromData (data, size_t(sizeInBytes));
+    valueTree = tree.getChildWithName("Variables");
+    
+    if (tree.isValid())
+    {
+        treeState.state = tree;
+        _width = valueTree.getProperty("width");
+        _height = valueTree.getProperty("height");
+        updateParameters();
+    }
 }
 
 //==============================================================================

@@ -49,9 +49,27 @@ public:
     const juce::String getProgramName (int index) override;
     void changeProgramName (int index, const juce::String& newName) override;
 
-    //==============================================================================
+    //== Parameters ================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    juce::AudioProcessorValueTreeState treeState;
+    
+    juce::ValueTree valueTree
+    { "Variables", {},
+        {
+            { "Group", {{ "name", "variables" }},
+                {
+                    { "Parameter", {{ "id", "width" }, { "value", 0.0 }}},
+                    { "Parameter", {{ "id", "width" }, { "value", 0.0 }}},
+                }
+                
+            }
+        }
+    };
+    
+    float _width = 0.0f;
+    float _height = 0.0f;
     
     //==============================================================================
     void clearUnusedOutputChannels(juce::AudioBuffer<float>& buffer);
@@ -59,11 +77,8 @@ public:
     void processTone(juce::dsp::AudioBlock<float>& block);
     void updateParameters();
     
-    //== Tree state ================================================================
-    juce::AudioProcessorValueTreeState treeState;
-    
 private:
-    //== Functions =================================================================
+    //== Parameters =================================================================
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     void parameterChanged(const juce::String& parameterID, float newValue) override;

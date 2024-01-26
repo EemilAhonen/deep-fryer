@@ -44,12 +44,21 @@ void DeepFryerAudioProcessorEditor::uiConstructor()
     mixSlider.setLookAndFeel(&simpleSlider);
     mixSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, mixID, mixSlider);
     
+    // Make sure that before the constructor has finished, you've set the
+    // editor's size to whatever you need it to be.
+    
+    if (audioProcessor._width == 0.0)
+    {
+        setSize (INIT_WIDTH, INIT_HEIGHT);
+    }
+    else
+    {
+        DBG(audioProcessor._width);
+        setSize(audioProcessor._width, audioProcessor._height);
+    }
+    
     // Set resizable and contraints
     setResizable(true, true);
     getConstrainer() -> setFixedAspectRatio(2.0);
     setResizeLimits(MIN_WIDTH, MIN_HEIGHT, MAX_WIDTH, MAX_HEIGHT);
-    
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (INIT_WIDTH, INIT_HEIGHT);
 }

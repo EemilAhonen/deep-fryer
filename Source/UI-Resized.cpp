@@ -43,4 +43,6 @@ void DeepFryerAudioProcessorEditor::uiResized()
     toneKnob.setBounds(toneX, smallKnobY, smallKnobSize, smallKnobSize);
     clarityKnob.setBounds(clarityX, smallKnobY, smallKnobSize, smallKnobSize);
     mixSlider.setBounds(mixSliderX, mixSliderY, mixSliderWidth, mixSliderHeight);
+    
+    savePluginBounds();
 }

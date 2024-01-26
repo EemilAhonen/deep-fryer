@@ -14,6 +14,7 @@ DeepFryerAudioProcessorEditor::DeepFryerAudioProcessorEditor (DeepFryerAudioProc
 : AudioProcessorEditor (&p), audioProcessor (p)
 {
     uiConstructor();
+    
 }
 
 DeepFryerAudioProcessorEditor::~DeepFryerAudioProcessorEditor()
@@ -36,4 +37,12 @@ void DeepFryerAudioProcessorEditor::paint (juce::Graphics& g)
 void DeepFryerAudioProcessorEditor::resized()
 {
     uiResized();
+}
+
+void DeepFryerAudioProcessorEditor::savePluginBounds()
+{
+    audioProcessor.valueTree.setProperty("width", getWidth(), nullptr);
+    audioProcessor.valueTree.setProperty("height", getHeight(), nullptr);
+    audioProcessor._width = getWidth();
+    audioProcessor._height = getHeight();
 }
