@@ -12,7 +12,7 @@
 			<key>manufacturer</key>
 			<string>Keis</string>
 			<key>name</key>
-			<string>Keisari: Deep Fryer</string>
+			<string>KeisariDSP: Deep Fryer</string>
 			<key>resourceUsage</key>
 			<dict>
 				<key>network.client</key>
@@ -37,7 +37,7 @@
 	<key>CFBundleIconFile</key>
 	<string>Icon.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.Keisari.DeepFryer</string>
+	<string>com.KeisariDSP.DeepFryer</string>
 	<key>CFBundleName</key>
 	<string>DeepFryer</string>
 	<key>CFBundlePackageType</key>
@@ -73,6 +73,6 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Keisari</string>
+	<string>KeisariDSP</string>
 </dict>
 </plist>
