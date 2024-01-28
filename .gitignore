@@ -35,5 +35,8 @@
 **/Builds
 **/JuceLibraryCode
 
+# Installer files
+**/Release/MacOSX/DeepFryerMacInstaller.pkgproj
+
 # Mac specific
 *.ds_store
