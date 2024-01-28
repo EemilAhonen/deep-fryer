@@ -39,7 +39,7 @@ void AdvancedKnob::drawRotarySlider(juce::Graphics &g, int x, int y, int width, 
     }
 
     // Calculate outline properties
-    auto outlineW = radius * (1 - _innerScale);
+    float outlineW = radius * (1 - _innerScale);
     float outlineOffset = radius * _outlineWidth;
 
     // Function to draw an arc
@@ -55,8 +55,8 @@ void AdvancedKnob::drawRotarySlider(juce::Graphics &g, int x, int y, int width, 
     drawArc(_outlineColor, outlineW, radius, radius - outlineW * 0.5f);
 
     // Calculate line width and arc radius for background arc
-    auto lineW = outlineW - outlineOffset * 2;
-    auto arcRadius = radius - lineW * 0.5f - outlineOffset;
+    float lineW = outlineW - outlineOffset * 2;
+    float arcRadius = radius - lineW * 0.5f - outlineOffset;
 
     // Draw the background arc
     drawArc(_backgroundColor, lineW, arcRadius, arcRadius);

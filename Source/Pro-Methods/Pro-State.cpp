@@ -26,7 +26,7 @@ void DeepFryerAudioProcessor::setStateInformation (const void* data, int sizeInB
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
-    auto tree = juce::ValueTree::readFromData (data, size_t(sizeInBytes));
+    juce::ValueTree tree = juce::ValueTree::readFromData (data, size_t(sizeInBytes));
     _valueTree = tree.getChildWithName("Variables");
     
     if (tree.isValid())

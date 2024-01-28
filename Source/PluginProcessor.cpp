@@ -34,11 +34,11 @@ DeepFryerAudioProcessor::~DeepFryerAudioProcessor()
 void DeepFryerAudioProcessor::clearUnusedOutputChannels(juce::AudioBuffer<float>& buffer)
 {
     // Get the total number of input and output channels
-    auto totalNumInputChannels = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    int totalNumInputChannels = getTotalNumInputChannels();
+    int totalNumOutputChannels = getTotalNumOutputChannels();
 
     // Clear any unused output channels
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 }
 
