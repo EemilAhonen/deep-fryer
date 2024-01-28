@@ -33,6 +33,7 @@
 
 # JUCE framework
 **/Builds
+**/Release
 
 # Mac specific
 *.ds_store
