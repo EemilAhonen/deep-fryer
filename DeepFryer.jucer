@@ -3,9 +3,10 @@
 <JUCERPROJECT id="kSeo7L" name="DeepFryer" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="KeisariDSP"
               companyCopyright="KeisariDSP" companyEmail="keisaridsp@gmail.com"
-              pluginVST3Category="Distortion" pluginAAXCategory="8192" pluginName="Deep Fryer"
-              pluginDesc="Fry Your Ears" pluginManufacturerCode="Keis" pluginCode="Kdfr"
-              companyWebsite="https://eemilahonen.github.io" lv2Uri="https://eemil.ahonen.github.io/plugins/deep-fryer">
+              pluginVST3Category="Analyzer,Distortion" pluginAAXCategory="8192"
+              pluginName="Deep Fryer" pluginDesc="Fry Your Ears" pluginManufacturerCode="Keis"
+              pluginCode="Kdfr" companyWebsite="https://eemilahonen.github.io"
+              lv2Uri="https://eemilahonen.github.io/plugins/deep-fryer">
   <MAINGROUP id="YOnhxl" name="DeepFryer">
     <GROUP id="{8DF5C4DD-72F2-7F09-B0AD-664B307F20C4}" name="Source">
       <GROUP id="{995278BC-3E2A-B50B-B14B-03471CD752F7}" name="Assets">
