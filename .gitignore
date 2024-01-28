@@ -33,9 +33,7 @@
 
 # JUCE framework
 **/Builds
-*.jucer
 **/JuceLibraryCode
-**/Assets
 
 # Mac specific
 *.ds_store

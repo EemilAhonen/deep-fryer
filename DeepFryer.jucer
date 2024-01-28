@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="kSeo7L" name="DeepFryer" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="Keisari"
+              companyCopyright="Keisari" companyEmail="keisaridsp@gmail.com"
+              pluginVST3Category="Distortion" pluginAAXCategory="8192" pluginName="Deep Fryer"
+              pluginDesc="Fry Your Ears" pluginManufacturerCode="Keis" pluginCode="Kdfr"
+              companyWebsite="https://eemilahonen.github.io" lv2Uri="https://eemil.ahonen.github.io/plugins/deep-fryer">
+  <MAINGROUP id="YOnhxl" name="DeepFryer">
+    <GROUP id="{8DF5C4DD-72F2-7F09-B0AD-664B307F20C4}" name="Source">
+      <GROUP id="{995278BC-3E2A-B50B-B14B-03471CD752F7}" name="Assets">
+        <GROUP id="{8EC4F40B-D8DB-E276-F286-8EF1F6CB586C}" name="Images">
+          <FILE id="RTcOIE" name="Background.png" compile="0" resource="1" file="Assets/Images/Background.png"/>
+          <FILE id="Ro7eB6" name="Knob_Front.png" compile="0" resource="1" file="Assets/Images/Knob_Front.png"/>
+        </GROUP>
+        <GROUP id="{04B3810E-0647-CD88-EBDA-859FD7CFB851}" name="Icons">
+          <FILE id="UvHvwA" name="Icon.png" compile="0" resource="1" file="Assets/Icons/Icon.png"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{B1646D05-5B3A-541A-79F4-4EDDAE357BF5}" name="Keisari-Modules">
+        <GROUP id="{89792314-6D87-21AD-5A80-43A793F4C44E}" name="Helper-Functions">
+          <FILE id="vpIJRn" name="HelperFunctions.cpp" compile="1" resource="0"
+                file="Source/Keisari-Modules/Helper-Functions/HelperFunctions.cpp"/>
+          <FILE id="v5QXb5" name="HelperFunctions.h" compile="0" resource="0"
+                file="Source/Keisari-Modules/Helper-Functions/HelperFunctions.h"/>
+        </GROUP>
+        <GROUP id="{F6C5BC34-AB0F-B3FA-EBEF-13DC54BD4A88}" name="LookAndFeel">
+          <FILE id="D0TAty" name="AdvancedKnob.cpp" compile="1" resource="0"
+                file="Source/Keisari-Modules/LookAndFeel/AdvancedKnob.cpp"/>
+          <FILE id="Ev3va0" name="AdvancedKnob.h" compile="0" resource="0" file="Source/Keisari-Modules/LookAndFeel/AdvancedKnob.h"/>
+          <FILE id="HdysTd" name="SimpleSlider.cpp" compile="1" resource="0"
+                file="Source/Keisari-Modules/LookAndFeel/SimpleSlider.cpp"/>
+          <FILE id="L0IjMy" name="SimpleSlider.h" compile="0" resource="0" file="Source/Keisari-Modules/LookAndFeel/SimpleSlider.h"/>
+        </GROUP>
+        <GROUP id="{51EC53C2-2163-5FEC-AF1C-4B339518D99D}" name="UI-Components">
+          <FILE id="Hsiq1V" name="SliderComponent.cpp" compile="1" resource="0"
+                file="Source/Keisari-Modules/UI-Components/SliderComponent.cpp"/>
+          <FILE id="KSarUW" name="SliderComponent.h" compile="0" resource="0"
+                file="Source/Keisari-Modules/UI-Components/SliderComponent.h"/>
+        </GROUP>
+      </GROUP>
+      <GROUP id="{0B770A60-0D6B-E2E4-23AF-06CB75C403E6}" name="Globals">
+        <FILE id="aPjnsM" name="Globals.cpp" compile="1" resource="0" file="Source/Globals/Globals.cpp"/>
+        <FILE id="XMzrVx" name="Globals.h" compile="0" resource="0" file="Source/Globals/Globals.h"/>
+        <FILE id="cOTFRd" name="Parameters.cpp" compile="1" resource="0" file="Source/Globals/Parameters.cpp"/>
+        <FILE id="ki2ux1" name="Parameters.h" compile="0" resource="0" file="Source/Globals/Parameters.h"/>
+      </GROUP>
+      <GROUP id="{6B5D7C04-D7BD-BF7B-9E4E-A43933C9F0A7}" name="Pro-Methods">
+        <FILE id="gyCy3A" name="Pro-Parameters.cpp" compile="1" resource="0"
+              file="Source/Pro-Methods/Pro-Parameters.cpp"/>
+        <FILE id="UFCUzf" name="Pro-Prepare.cpp" compile="1" resource="0" file="Source/Pro-Methods/Pro-Prepare.cpp"/>
+        <FILE id="acIGVU" name="Pro-Process.cpp" compile="1" resource="0" file="Source/Pro-Methods/Pro-Process.cpp"/>
+        <FILE id="mD90ua" name="Pro-State.cpp" compile="1" resource="0" file="Source/Pro-Methods/Pro-State.cpp"/>
+      </GROUP>
+      <FILE id="qZo4Sp" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="ngVrT4" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <GROUP id="{AC2CF050-CEA1-01EA-D100-DCBDBCCCC28C}" name="UI-Methods">
+        <FILE id="YDk9Mp" name="UI-Constructor.cpp" compile="1" resource="0"
+              file="Source/UI-Methods/UI-Constructor.cpp"/>
+        <FILE id="ARBetA" name="UI-Paint.cpp" compile="1" resource="0" file="Source/UI-Methods/UI-Paint.cpp"/>
+        <FILE id="qqHwvz" name="UI-Resized.cpp" compile="1" resource="0" file="Source/UI-Methods/UI-Resized.cpp"/>
+      </GROUP>
+      <FILE id="IQb4c4" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="YRiIEj" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" bigIcon="UvHvwA">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="DeepFryer"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="DeepFryer"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../Tools/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../Tools/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+</JUCERPROJECT>
