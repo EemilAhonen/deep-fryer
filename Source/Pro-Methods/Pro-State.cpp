@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
+#include "../PluginProcessor.h"
 
 void DeepFryerAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {

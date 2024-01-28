@@ -10,9 +10,9 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "SliderComponent.h"
-#include "SimpleSlider.h"
-#include "AdvancedKnob.h"
+#include "Keisari-Modules/UI-Components/SliderComponent.h"
+#include "Keisari-Modules/LookAndFeel/SimpleSlider.h"
+#include "Keisari-Modules/LookAndFeel/AdvancedKnob.h"
 
 //==============================================================================
 /**

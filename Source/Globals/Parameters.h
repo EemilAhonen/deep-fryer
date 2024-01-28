@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "SliderComponent.h"
+#include "../Keisari-Modules/UI-Components/SliderComponent.h"
 
 class Parameters
 {

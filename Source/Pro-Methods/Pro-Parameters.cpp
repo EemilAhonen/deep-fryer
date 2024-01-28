@@ -8,9 +8,9 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
-#include "Globals.h"
-#include "HelperFunctions.h"
+#include "../PluginProcessor.h"
+#include "../Globals/Globals.h"
+#include "../Keisari-Modules/Helper-Functions/HelperFunctions.h"
 
 //== Parameter functions =======================================================
 

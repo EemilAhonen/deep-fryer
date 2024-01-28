@@ -8,8 +8,8 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
-#include "HelperFunctions.h"
+#include "../PluginProcessor.h"
+#include "../Keisari-Modules/Helper-Functions/HelperFunctions.h"
 
 void DeepFryerAudioProcessor::processDistortion(juce::dsp::AudioBlock<float>& block)
 {

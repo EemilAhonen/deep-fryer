@@ -9,7 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "Parameters.h"
+#include "Globals/Parameters.h"
 
 //==============================================================================
 
