@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="kSeo7L" name="DeepFryer" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="Keisari"
-              companyCopyright="Keisari" companyEmail="keisaridsp@gmail.com"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="KeisariDSP"
+              companyCopyright="KeisariDSP" companyEmail="keisaridsp@gmail.com"
               pluginVST3Category="Distortion" pluginAAXCategory="8192" pluginName="Deep Fryer"
               pluginDesc="Fry Your Ears" pluginManufacturerCode="Keis" pluginCode="Kdfr"
               companyWebsite="https://eemilahonen.github.io" lv2Uri="https://eemil.ahonen.github.io/plugins/deep-fryer">
