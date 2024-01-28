@@ -10,8 +10,9 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "CustomKnob.h"
+#include "SliderComponent.h"
 #include "SimpleSlider.h"
+#include "AdvancedKnob.h"
 
 //==============================================================================
 /**
@@ -31,14 +32,14 @@ private:
     // access the processor object that created it.
     DeepFryerAudioProcessor& audioProcessor;
     
-    //== UI Modules ================================================================
-    
+    //== UI Functions ==============================================================
     void uiConstructor();
-    void createKnob(juce::Slider& knob, const juce::String& parameterID, float minValue, float maxValue, float interval, std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>& attachment);
     void uiPaint(juce::Graphics &g);
     void uiResized();
     
-    //== Parameters ================================================================
+    void createSlider(std::unique_ptr<SliderComponent>& sliderComponent);
+    
+    //== Window Size ===============================================================
     
     const int INIT_WIDTH = 750;
     const int INIT_HEIGHT = 375;
@@ -52,33 +53,11 @@ private:
     void savePluginBounds();
     
     //== Widgets ===================================================================
+    SimpleSlider _simpleSlider;
+    AdvancedKnob _advancedKnob;
     
-    CustomKnob customKnob;
-    SimpleSlider simpleSlider;
-    
-    //== Parameters ================================================================
-    
-    juce::Slider inputVolumeKnob;
-    juce::Slider outputVolumeKnob;
-    juce::Slider driveKnob;
-    juce::Slider toneKnob;
-    juce::Slider clarityKnob;
-    juce::Slider mixSlider;
-    
-    //== Slider listeners ==========================================================
-    
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> inputVolumeKnobAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> outputVolumeKnobAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> driveKnobAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> toneKnobAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> clarityKnobAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mixSliderAttachment;
-    
-    //== Images ====================================================================
-    
-    juce::Image backgroundImage;
-    
-    // TODO: KNOB IMAGE HERE
+    //== Slider Attachments ========================================================
+    std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> _sliderAttachments;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DeepFryerAudioProcessorEditor)

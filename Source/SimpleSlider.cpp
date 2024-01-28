@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-    CustomSlider.cpp
+    SimpleSlider.cpp
     Created: 24 Jan 2024 8:15:13pm
     Author:  Eemil Ahonen
 
@@ -14,45 +14,39 @@
 
 SimpleSlider::SimpleSlider()
 {
-    // TODO: Init these on call
-    backgroundColor = juce::Colour(77,77,77);
-    foregroundColor = juce::Colour(195,52,63);
-    thumbColor = juce::Colour(251,185,15);
     
-    rectVerticalScale = 0.2f;
-    sliderThumbScale = 0.4f;
 }
 
 int SimpleSlider::getSliderThumbRadius(juce::Slider& slider)
 {
-    return (int)(slider.getHeight() * sliderThumbScale);
+    return (int)(slider.getHeight() * _sliderThumbScale);
 }
 
 void SimpleSlider::drawLinearSlider (juce::Graphics& g, int x, int y, int width, int height,
                        float sliderPos, float minSliderPos, float maxSliderPos,
                                    juce::Slider::SliderStyle style, juce::Slider& slider)
 {
-    // Scale the slider according to the sliderThumb and rectVertical scale
-    float cornerSize = height * rectVerticalScale * 0.35f;
+    // Calculate scaled dimensions and positions
+    float cornerSize = height * _rectVerticalScale * 0.35f;
     float rectangleWidth = width;
-    float rectangleHeight = height * rectVerticalScale;
-    float rectangleY = y + height / 2 * (1 - rectVerticalScale);
+    float rectangleHeight = height * _rectVerticalScale;
+    float rectangleY = y + height / 2 * (1 - _rectVerticalScale);
     
-    float thumbDiameter = height * sliderThumbScale;
-    float thumbY = y + height / 2 * (1 - sliderThumbScale);
+    float thumbDiameter = height * _sliderThumbScale;
+    float thumbY = y + height / 2 * (1 - _sliderThumbScale);
     
     float thumbSlider = sliderPos - thumbDiameter / 2.0f;
     float foreSlider = sliderPos - thumbDiameter;
     
     // Draw background
-    g.setColour(backgroundColor);
+    g.setColour(_backgroundColor);
     g.fillRoundedRectangle(x, rectangleY, rectangleWidth, rectangleHeight, cornerSize);
     
-    // Draw foreground
-    g.setColour(foregroundColor);
+    // Draw fill
+    g.setColour(_fillColor);
     g.fillRoundedRectangle(x, rectangleY, foreSlider, rectangleHeight, cornerSize);
     
     // Draw slider thumb
-    g.setColour(thumbColor);
+    g.setColour(_thumbColor);
     g.fillEllipse(thumbSlider, thumbY, thumbDiameter, thumbDiameter);
 }

@@ -26,10 +26,11 @@ public:
     int getSliderThumbRadius(juce::Slider& slider) override;
 
 private:
-    juce::Colour backgroundColor;
-    juce::Colour foregroundColor;
-    juce::Colour thumbColor;
+    // TODO: Make these initialise on the constructor
+    juce::Colour _backgroundColor = juce::Colour(77,77,77);
+    juce::Colour _fillColor = juce::Colour(195,52,63);
+    juce::Colour _thumbColor = juce::Colour(251,185,15);
     
-    float rectVerticalScale = 0.2f;
-    float sliderThumbScale = 0.4f;
+    float _rectVerticalScale = 0.2f;
+    float _sliderThumbScale = 0.4f;
 };

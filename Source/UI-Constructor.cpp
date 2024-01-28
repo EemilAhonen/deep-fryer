@@ -8,57 +8,60 @@
   ==============================================================================
 */
 
-#include "PluginProcessor.h"
 #include "PluginEditor.h"
 
 //==============================================================================
 
-void DeepFryerAudioProcessorEditor::createKnob(juce::Slider& knob, const juce::String& parameterID, float minValue, float maxValue, float interval, std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>& attachment)
+void DeepFryerAudioProcessorEditor::createSlider(std::unique_ptr<SliderComponent>& sliderComponent)
 {
-    addAndMakeVisible(knob);
-    knob.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
-    knob.setTextBoxStyle(juce::Slider::NoTextBox, false, 55, 25);
-    knob.setDoubleClickReturnValue(true, 0.0);
-    knob.setRange(minValue, maxValue, interval);
-    knob.setLookAndFeel(&customKnob);
-    attachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, parameterID, knob);
+    juce::Slider& slider = sliderComponent->getSlider();
+    
+    addAndMakeVisible(slider);
+    slider.setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    slider.setDoubleClickReturnValue(true, sliderComponent->_initValue);
+    slider.setRange(sliderComponent->_minValue, sliderComponent->_maxValue, sliderComponent->_interval);
+    
+    // Add look and feels here
+    switch (sliderComponent->_lookAndFeelID)
+    {
+        case 0:
+            slider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+            slider.setLookAndFeel(&_advancedKnob);
+            break;
+
+        case 1:
+            slider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
+            slider.setLookAndFeel(&_simpleSlider);
+            break;
+
+        // Add more cases if needed
+
+        default:
+            // Handle unknown lookAndFeelID
+            break;
+    }
+    
+    // Add slider attachment
+    _sliderAttachments.push_back(std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor._treeState, sliderComponent->_id, slider));
 }
 
 void DeepFryerAudioProcessorEditor::uiConstructor()
 {
-    // TODO: REDO THIS
+    // Set advanced knob image
+    juce::Image knobImage = juce::ImageCache::getFromMemory(BinaryData::Knob_Front_png, BinaryData::Knob_Front_pngSize);
+    _advancedKnob.setParams(knobImage);
     
-    // Create UI knobs
-    createKnob(inputVolumeKnob, inputVolumeID, -24.0f, 24.0f, 0.01f, inputVolumeKnobAttachment);
-    createKnob(outputVolumeKnob, outputVolumeID, -24.0f, 24.0f, 0.01f, outputVolumeKnobAttachment);
-    createKnob(driveKnob, driveID, -100.0f, 100.0f, 0.01f, driveKnobAttachment);
-    createKnob(toneKnob, toneID, 0.0f, 100.0f, 0.01f, toneKnobAttachment);
-    createKnob(clarityKnob, clarityID, 0.0f, 100.0f, 0.01f, clarityKnobAttachment);
-    
-    // Create mix slider
-    addAndMakeVisible(mixSlider);
-    mixSlider.setSliderStyle(juce::Slider::SliderStyle::LinearHorizontal);
-    mixSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 55, 25);
-    mixSlider.setDoubleClickReturnValue(true, 0.0);
-    mixSlider.setRange(0.0f, 100.0f, 0.01f);
-    mixSlider.setLookAndFeel(&simpleSlider);
-    mixSliderAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, mixID, mixSlider);
-    
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    
-    if (audioProcessor._width == 0.0)
+    // Create sliders
+    for (auto& sliderComponent : audioProcessor._parameters.getSliderComponents())
     {
-        setSize (INIT_WIDTH, INIT_HEIGHT);
+       createSlider(sliderComponent);
     }
-    else
-    {
-        DBG(audioProcessor._width);
-        setSize(audioProcessor._width, audioProcessor._height);
-    }
-    
-    // Set resizable and contraints
+
+    // Set editor size
+    setSize(audioProcessor._width == 0.0 ? INIT_WIDTH : audioProcessor._width, audioProcessor._height);
+        
+    // Set resizable and constraints
     setResizable(true, true);
-    getConstrainer() -> setFixedAspectRatio(2.0);
+    getConstrainer()->setFixedAspectRatio(2.0);
     setResizeLimits(MIN_WIDTH, MIN_HEIGHT, MAX_WIDTH, MAX_HEIGHT);
 }

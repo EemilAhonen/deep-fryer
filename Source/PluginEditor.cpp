@@ -14,18 +14,15 @@ DeepFryerAudioProcessorEditor::DeepFryerAudioProcessorEditor (DeepFryerAudioProc
 : AudioProcessorEditor (&p), audioProcessor (p)
 {
     uiConstructor();
-    
 }
 
 DeepFryerAudioProcessorEditor::~DeepFryerAudioProcessorEditor()
 {
-    inputVolumeKnob.setLookAndFeel(nullptr);
-    inputVolumeKnob.setLookAndFeel(nullptr);
-    outputVolumeKnob.setLookAndFeel(nullptr);
-    driveKnob.setLookAndFeel(nullptr);
-    toneKnob.setLookAndFeel(nullptr);
-    clarityKnob.setLookAndFeel(nullptr);
-    mixSlider.setLookAndFeel(nullptr);
+    // Release the component lookAndFeel
+    for (auto& sliderComponent : audioProcessor._parameters.getSliderComponents())
+    {
+        sliderComponent->getSlider().setLookAndFeel(nullptr);
+    }
 }
 
 //==============================================================================
@@ -41,8 +38,12 @@ void DeepFryerAudioProcessorEditor::resized()
 
 void DeepFryerAudioProcessorEditor::savePluginBounds()
 {
-    audioProcessor.valueTree.setProperty("width", getWidth(), nullptr);
-    audioProcessor.valueTree.setProperty("height", getHeight(), nullptr);
-    audioProcessor._width = getWidth();
-    audioProcessor._height = getHeight();
+    const int newWidth = getWidth();
+    const int newHeight = getHeight();
+    
+    audioProcessor._valueTree.setProperty("width", newWidth, nullptr);
+    audioProcessor._valueTree.setProperty("height", newHeight, nullptr);
+    
+    audioProcessor._width = newWidth;
+    audioProcessor._height = newHeight;
 }
