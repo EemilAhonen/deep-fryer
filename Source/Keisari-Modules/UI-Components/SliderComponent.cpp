@@ -10,6 +10,8 @@
 
 #include "SliderComponent.h"
 
+//==============================================================================
+
 void SliderComponent::setBounds(float scaleFactor)
 {
     _slider.setBounds(_x * scaleFactor, _y * scaleFactor, _width * scaleFactor, _height * scaleFactor);

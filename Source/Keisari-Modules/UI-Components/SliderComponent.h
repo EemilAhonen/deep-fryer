@@ -11,6 +11,8 @@
 #pragma once
 #include <JuceHeader.h>
 
+//==============================================================================
+
 // TODO: Make an elder class and inherit from that, this is only for sliders now
 
 class SliderComponent

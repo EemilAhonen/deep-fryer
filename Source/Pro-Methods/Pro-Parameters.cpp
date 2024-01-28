@@ -12,7 +12,7 @@
 #include "../Globals/Globals.h"
 #include "../Keisari-Modules/Helper-Functions/HelperFunctions.h"
 
-//== Parameter functions =======================================================
+//==============================================================================
 
 void DeepFryerAudioProcessor::addParameterListeners()
 {

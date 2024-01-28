@@ -10,6 +10,8 @@
 
 #include "../PluginProcessor.h"
 
+//==============================================================================
+
 void DeepFryerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Store the sample rate for later use

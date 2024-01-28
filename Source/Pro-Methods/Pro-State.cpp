@@ -10,6 +10,8 @@
 
 #include "../PluginProcessor.h"
 
+//==============================================================================
+
 void DeepFryerAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.

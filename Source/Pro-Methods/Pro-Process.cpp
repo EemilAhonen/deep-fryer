@@ -11,6 +11,8 @@
 #include "../PluginProcessor.h"
 #include "../Keisari-Modules/Helper-Functions/HelperFunctions.h"
 
+//==============================================================================
+
 void DeepFryerAudioProcessor::processDistortion(juce::dsp::AudioBlock<float>& block)
 {
     for (int channel = 0; channel < block.getNumChannels(); ++channel)
