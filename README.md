@@ -16,11 +16,6 @@ To download the latest release, visit the [official website](https://eemilahonen
 [//]: # "#### Version 1.0.0"
 [//]: # "- Release"
 
-## TODO
-
-- Fix the tone knob Y-coordinate.
-- Move the drive text higher.
-
 ## Credits
 
 - Lead Developer & Graphics - [Keisari](https://github.com/EemilAhonen)
