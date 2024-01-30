@@ -44,7 +44,7 @@
  #define JucePlugin_Name                   "Deep Fryer"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "Fry Your Ears"
+ #define JucePlugin_Desc                   "Deep Fryer is a dynamic distortion effect plugin"
 #endif
 #ifndef  JucePlugin_Manufacturer
  #define JucePlugin_Manufacturer           "KeisariDSP"

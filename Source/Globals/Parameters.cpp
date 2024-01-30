@@ -25,7 +25,7 @@ void Parameters::initParameters()
     addSliderParameter(outputVolumeID, outputVolumeName, -24.0f, 24.0f, 0.0f, 0.1f, 2467.0f, 442.0f, 497.5f, 497.5f, 0);
     addSliderParameter(driveID, driveName, 0.0f, 100.0f, 0.0f, 0.1f, 1100.0f, 290.0f, 800.0f, 800.0f, 0);
     addSliderParameter(toneID, toneName, -100.0f, 100.0f, 0.0f, 0.1f, 567.0f, 442.0f, 497.5f, 497.5f, 0);
-    addSliderParameter(clarityID, clarityName, 0.0f, 100.0f, 0.0f, 0.1f, 1935.0f, 497.5f, 497.5f, 497.5f, 0);
+    addSliderParameter(clarityID, clarityName, 0.0f, 100.0f, 0.0f, 0.1f, 1935.0f, 442.0f, 497.5f, 497.5f, 0);
     addSliderParameter(mixID, mixName, 0.0f, 100.0f, 100.0f, 0.1f, 2620.0f, 0.0f, 340.0f, 150.0f, 1);
 }
 
