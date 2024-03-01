@@ -43,7 +43,7 @@
 namespace ProjectInfo
 {
     const char* const  projectName    = "DeepFryer";
-    const char* const  companyName    = "KeisariDSP";
+    const char* const  companyName    = "KeisariStudios";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }

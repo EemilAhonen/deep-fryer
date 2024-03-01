@@ -47,13 +47,13 @@
  #define JucePlugin_Desc                   "Deep Fryer is a dynamic distortion effect plugin"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "KeisariDSP"
+ #define JucePlugin_Manufacturer           "KeisariStudios"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
- #define JucePlugin_ManufacturerWebsite    "https://eemilahonen.github.io"
+ #define JucePlugin_ManufacturerWebsite    "https://keisaristudios.com"
 #endif
 #ifndef  JucePlugin_ManufacturerEmail
- #define JucePlugin_ManufacturerEmail      "keisaridsp@gmail.com"
+ #define JucePlugin_ManufacturerEmail      "keisaristudios@gmail.com"
 #endif
 #ifndef  JucePlugin_ManufacturerCode
  #define JucePlugin_ManufacturerCode       0x4b656973
@@ -110,10 +110,10 @@
  #define JucePlugin_AUManufacturerCode     JucePlugin_ManufacturerCode
 #endif
 #ifndef  JucePlugin_CFBundleIdentifier
- #define JucePlugin_CFBundleIdentifier     com.KeisariDSP.DeepFryer
+ #define JucePlugin_CFBundleIdentifier     com.KeisariStudios.DeepFryer
 #endif
 #ifndef  JucePlugin_AAXIdentifier
- #define JucePlugin_AAXIdentifier          com.KeisariDSP.DeepFryer
+ #define JucePlugin_AAXIdentifier          com.KeisariStudios.DeepFryer
 #endif
 #ifndef  JucePlugin_AAXManufacturerCode
  #define JucePlugin_AAXManufacturerCode    JucePlugin_ManufacturerCode
@@ -137,7 +137,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "KeisariDSP: Deep Fryer"
+ #define JucePlugin_IAAName                "KeisariStudios: Deep Fryer"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16
@@ -152,10 +152,10 @@
  #define JucePlugin_ARATransformationFlags  0
 #endif
 #ifndef  JucePlugin_ARAFactoryID
- #define JucePlugin_ARAFactoryID           "com.KeisariDSP.DeepFryer.factory"
+ #define JucePlugin_ARAFactoryID           "com.KeisariStudios.DeepFryer.factory"
 #endif
 #ifndef  JucePlugin_ARADocumentArchiveID
- #define JucePlugin_ARADocumentArchiveID   "com.KeisariDSP.DeepFryer.aradocumentarchive.1.0.0"
+ #define JucePlugin_ARADocumentArchiveID   "com.KeisariStudios.DeepFryer.aradocumentarchive.1.0.0"
 #endif
 #ifndef  JucePlugin_ARACompatibleArchiveIDs
  #define JucePlugin_ARACompatibleArchiveIDs  ""

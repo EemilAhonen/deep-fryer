@@ -1,6 +1,6 @@
 # Deep Fryer
 
-A dynamic distortion effect plugin meticulously crafted to emulate the iconic Neve 1073 Preamplifier. Immerse your sound in the vintage essence of Fried Chicken.
+A dynamic distortion effect plugin.
 <br>
 Deep Fryer is compatible with both Windows and MacOS (Intel/Apple Silicon). Available as a VST3 and AU plugin.
 
@@ -10,7 +10,7 @@ Deep Fryer is compatible with both Windows and MacOS (Intel/Apple Silicon). Avai
 
 ## Download
 
-To download the latest release, visit the [official website](https://eemilahonen.github.io/plugins/deep-fryer).
+To download the latest release, visit the [official website](https://keisaristudios.com/plugins/deep-fryer).
 
 [//]: # "## Changelog"
 [//]: # "#### Version 1.0.0"

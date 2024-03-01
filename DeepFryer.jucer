@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="kSeo7L" name="DeepFryer" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="KeisariDSP"
-              companyCopyright="KeisariDSP" companyEmail="keisaridsp@gmail.com"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="KeisariStudios"
+              companyCopyright="KeisariStudios" companyEmail="keisaristudios@gmail.com"
               pluginVST3Category="Distortion" pluginAAXCategory="8192" pluginName="Deep Fryer"
               pluginDesc="Deep Fryer is a dynamic distortion effect plugin"
-              pluginManufacturerCode="Keis" pluginCode="Kdfr" companyWebsite="https://eemilahonen.github.io"
-              lv2Uri="https://eemilahonen.github.io/plugins/deep-fryer">
+              pluginManufacturerCode="Keis" pluginCode="Kdfr" companyWebsite="https://keisaristudios.com"
+              lv2Uri="https://keisaristudios.com/plugins/deep-fryer">
   <MAINGROUP id="YOnhxl" name="DeepFryer">
     <GROUP id="{8DF5C4DD-72F2-7F09-B0AD-664B307F20C4}" name="Source">
       <GROUP id="{995278BC-3E2A-B50B-B14B-03471CD752F7}" name="Assets">
         <GROUP id="{8EC4F40B-D8DB-E276-F286-8EF1F6CB586C}" name="Images">
-          <FILE id="RTcOIE" name="Background.png" compile="0" resource="1" file="Assets/Images/Background.png"/>
+          <FILE id="LqImlD" name="Background.png" compile="0" resource="1" file="Assets/Images/Background.png"/>
           <FILE id="Ro7eB6" name="Knob_Front.png" compile="0" resource="1" file="Assets/Images/Knob_Front.png"/>
         </GROUP>
         <GROUP id="{04B3810E-0647-CD88-EBDA-859FD7CFB851}" name="Icons">
